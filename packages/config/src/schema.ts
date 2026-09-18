@@ -83,6 +83,14 @@ export const WebappConfigSchema = z
         ].join('\n'),
       }),
     relationshipsBrowser: RelationshipsBrowserConfigSchema.optional(),
+    orthogonalEdges: z.boolean()
+      .optional()
+      .meta({
+        description: [
+          'Render relationship edges as orthogonal paths - horizontal and vertical',
+          'segments with 90-degree corners - instead of curves.',
+        ].join('\n'),
+      }),
   })
   .meta({
     id: 'WebappConfig',
