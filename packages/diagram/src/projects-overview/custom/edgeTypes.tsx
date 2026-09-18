@@ -1,3 +1,4 @@
+import { getSmoothStepPath } from '@xyflow/system'
 import {
   EdgeContainer,
   EdgeLabel,
@@ -5,11 +6,16 @@ import {
   EdgePath,
   memoEdge,
 } from '../../base-primitives'
+import { useEnabledFeatures } from '../../context/DiagramFeatures'
+import { stripDegenerateCurves } from '../../utils/orthogonalEdgePath'
 import { bezierPath } from '../../utils/xyflow'
 import type { ProjectsOverviewTypes } from '../_types'
 
 export const RelationshipEdge = memoEdge<ProjectsOverviewTypes.EdgeProps>((edgeProps) => {
-  const path = bezierPath(edgeProps.data.points)
+  const { enableOrthogonalEdges } = useEnabledFeatures()
+  const path = enableOrthogonalEdges
+    ? stripDegenerateCurves(getSmoothStepPath({ ...edgeProps, borderRadius: 0 })[0])
+    : bezierPath(edgeProps.data.points)
 
   return (
     <EdgeContainer {...edgeProps}>

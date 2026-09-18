@@ -1,6 +1,6 @@
 import { css } from '@likec4/styles/css'
 import { Tooltip } from '@mantine/core'
-import { getBezierPath } from '@xyflow/system'
+import { getBezierPath, getSmoothStepPath } from '@xyflow/system'
 import {
   EdgeActionButton,
   EdgeContainer,
@@ -11,12 +11,13 @@ import {
 } from '../../../base-primitives'
 import { useEnabledFeatures } from '../../../context'
 import { useDiagram } from '../../../hooks/useDiagram'
+import { stripDegenerateCurves } from '../../../utils/orthogonalEdgePath'
 import type { RelationshipsBrowserTypes } from '../_types'
 import { useRelationshipsBrowser } from '../hooks'
 
 export const RelationshipEdge = memoEdge<RelationshipsBrowserTypes.EdgeProps>((props) => {
   const browser = useRelationshipsBrowser()
-  const { enableNavigateTo } = useEnabledFeatures()
+  const { enableNavigateTo, enableOrthogonalEdges } = useEnabledFeatures()
   const {
     data: {
       navigateTo,
@@ -24,7 +25,10 @@ export const RelationshipEdge = memoEdge<RelationshipsBrowserTypes.EdgeProps>((p
       existsInCurrentView,
     },
   } = props
-  const [svgPath, labelX, labelY] = getBezierPath(props)
+  const [bezierOrStep, labelX, labelY] = enableOrthogonalEdges
+    ? getSmoothStepPath({ ...props, borderRadius: 0 })
+    : getBezierPath(props)
+  const svgPath = enableOrthogonalEdges ? stripDegenerateCurves(bezierOrStep) : bezierOrStep
   const diagram = useDiagram()
 
   const markOrange = relations.length > 1 || !existsInCurrentView

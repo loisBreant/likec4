@@ -1,4 +1,4 @@
-import { getBezierPath } from '@xyflow/system'
+import { getBezierPath, getSmoothStepPath } from '@xyflow/system'
 import {
   EdgeActionButton,
   EdgeContainer,
@@ -9,14 +9,18 @@ import {
 } from '../../../base-primitives'
 import { useEnabledFeatures } from '../../../context'
 import { useDiagram } from '../../../hooks/useDiagram'
+import { stripDegenerateCurves } from '../../../utils/orthogonalEdgePath'
 import type { RelationshipDetailsTypes } from '../_types'
 
 export const RelationshipEdge = memoEdge<RelationshipDetailsTypes.EdgeProps>((props) => {
-  const { enableNavigateTo } = useEnabledFeatures()
+  const { enableNavigateTo, enableOrthogonalEdges } = useEnabledFeatures()
   const {
     data: { navigateTo },
   } = props
-  const [svgPath, labelX, labelY] = getBezierPath(props)
+  const [bezierOrStep, labelX, labelY] = enableOrthogonalEdges
+    ? getSmoothStepPath({ ...props, borderRadius: 0 })
+    : getBezierPath(props)
+  const svgPath = enableOrthogonalEdges ? stripDegenerateCurves(bezierOrStep) : bezierOrStep
   const diagram = useDiagram()
   return (
     <EdgeContainer {...props}>
