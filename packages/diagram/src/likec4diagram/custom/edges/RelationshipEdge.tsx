@@ -61,6 +61,7 @@ export const RelationshipEdge = memoEdge<Types.EdgeProps<'relationship'>>((props
     enableNavigateTo,
     enableReadOnly,
     enableCompareWithLatest,
+    enableOrthogonalEdges,
   } = useEnabledFeatures()
   const enabledEditing = !enableReadOnly
   const {
@@ -85,6 +86,7 @@ export const RelationshipEdge = memoEdge<Types.EdgeProps<'relationship'>>((props
     props,
     controlPoints,
     isControlPointDragging,
+    orthogonal: enableOrthogonalEdges,
   })
 
   let labelX = labelBBox?.x ?? 0,

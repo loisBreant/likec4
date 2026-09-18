@@ -299,6 +299,13 @@ export interface LikeC4DiagramProperties<A extends Any = Unknown> {
    * Override ReactFlow props
    */
   reactFlowProps?: OverrideReactFlowProps | undefined
+
+  /**
+   * Render relationship edges as orthogonal (horizontal/vertical) paths with
+   * 90-degree corners instead of curved splines.
+   * @default false
+   */
+  enableOrthogonalEdges?: boolean | undefined
 }
 
 export type OpenSourceParams<A extends Any = Unknown> =

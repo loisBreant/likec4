@@ -29,6 +29,11 @@ const FeatureNames = [
    */
   'Vscode',
   'ElementTags',
+  /**
+   * Render relationship edges as orthogonal (horizontal/vertical) paths
+   * instead of curved splines.
+   */
+  'OrthogonalEdges',
 ] as const
 export type FeatureName = typeof FeatureNames[number]
 
@@ -66,6 +71,7 @@ export const DefaultFeatures: EnabledFeatures = {
   enableVscode: false,
   enableElementTags: false,
   enableNotes: false,
+  enableOrthogonalEdges: false,
 }
 const DiagramFeaturesContext = createContext<EnabledFeatures>(DefaultFeatures)
 
