@@ -20,6 +20,7 @@ type ProjectData = {
   landingPage: LikeC4ProjectConfig['landingPage']
   relationshipBrowserDefaultScope: RelationshipBrowserScope
   exportFormats: WebappExportFormat[]
+  orthogonalEdges: boolean
 }
 
 const code = (projects: NonEmptyArray<ProjectData>) => `
@@ -67,6 +68,7 @@ export const projectsModule = {
         landingPage: p.config.landingPage,
         relationshipBrowserDefaultScope: p.config.webapp?.relationshipsBrowser?.defaultScope ?? 'view',
         exportFormats: effectiveWebappExportFormats(p.config),
+        orthogonalEdges: p.config.webapp?.orthogonalEdges ?? false,
       }))),
       moduleType: 'js',
     }
