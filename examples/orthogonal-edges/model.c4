@@ -1,0 +1,54 @@
+// Visual fixture for validating orthogonal relationship-edge rendering
+// (enable via LikeC4Diagram's `enableOrthogonalEdges` prop).
+//
+// Nodes are connected so relationships travel left-right, right-left,
+// top-bottom, bottom-top, and diagonally, with several crossing near each
+// other, one bidirectional link, labelled links, dashed/dotted styling, a
+// relationship into a nested element, and two pairs of opposite relationships
+// between the same nodes (which must be drawn side by side, not overlapping).
+
+specification {
+  element component
+
+  relationship async {
+    line dotted
+    tail onormal
+  }
+  relationship sync {
+    color amber
+  }
+}
+
+model {
+  component orthoNorth 'North'
+  component orthoSouth 'South'
+  component orthoEast 'East'
+  component orthoWest 'West'
+  component orthoCenter 'Center Hub' {
+    component orthoCenterInner 'Inner Service'
+  }
+
+  orthoWest -> orthoCenter 'west to center'
+  orthoCenter -> orthoEast 'center to east'
+  orthoNorth -> orthoCenter 'north to center'
+  orthoCenter -> orthoSouth 'center to south'
+  orthoEast -> orthoWest 'east back to west'
+  orthoSouth -> orthoNorth 'south back to north'
+  orthoCenter <-> orthoEast 'heartbeat'
+  orthoNorth -[async]-> orthoWest 'pull config'
+  orthoSouth -[sync]-> orthoEast 'push metrics'
+  orthoCenterInner -> orthoSouth 'inner sync' { style { line dashed } }
+  orthoWest -> orthoCenterInner 'diagonal to inner'
+
+  // Opposite relationships between the same pair - these must not overlap
+  orthoNorth -> orthoSouth 'read tenants'
+  orthoSouth -> orthoNorth 'verify access'
+}
+
+views {
+  view orthogonalEdgesFixture {
+    title 'Orthogonal Edges Fixture'
+    include *
+    autoLayout LeftRight
+  }
+}

@@ -326,6 +326,12 @@ describe('LikeC4', () => {
           ],
           "folder": "multi-relation-extend",
         },
+        "orthogonal-edges": {
+          "documents": [
+            "model.c4",
+          ],
+          "folder": "orthogonal-edges",
+        },
         "overflow-test": {
           "documents": [
             "model.c4",

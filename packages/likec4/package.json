@@ -107,6 +107,7 @@
     "dev:template": "pnpm cli:serve ../create-likec4/template",
     "dev:e2e": "pnpm cli:serve ../../e2e/src",
     "dev:example-cloud": "pnpm cli:serve ../../examples/cloud-system",
+    "dev:orthogonal-edges": "pnpm cli:serve ../../examples/orthogonal-edges",
     "dev:failed": "pnpm cli:serve ../../examples/failed",
     "dev:example-dev": "pnpm cli:serve ../../examples/diagrams-dev/likec4",
     "dev:examples": "pnpm cli:serve ../../examples",
