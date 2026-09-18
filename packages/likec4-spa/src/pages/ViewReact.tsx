@@ -65,6 +65,7 @@ export function ViewReact() {
       zoomable
       pannable
       controls
+      enableOrthogonalEdges={project.orthogonalEdges}
       fitViewPadding={{
         top: '70px',
         bottom: '32px',

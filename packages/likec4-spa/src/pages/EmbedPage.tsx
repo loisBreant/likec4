@@ -49,6 +49,7 @@ export function EmbedPage() {
         fitView={true}
         background={'transparent'}
         fitViewPadding={0}
+        enableOrthogonalEdges={project.orthogonalEdges}
         dynamicViewVariant={dynamic}
         enableRelationshipDetails
         enableRelationshipBrowser

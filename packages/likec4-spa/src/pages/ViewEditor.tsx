@@ -73,6 +73,7 @@ export function ViewEditor() {
         zoomable
         pannable
         controls
+        enableOrthogonalEdges={project.orthogonalEdges}
         fitViewPadding={{
           top: '70px',
           bottom: '32px',

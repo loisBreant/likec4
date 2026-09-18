@@ -17,6 +17,10 @@ const testState = vi.hoisted(() => ({
   search: {
     format: 'png',
   },
+  project: {
+    id: 'test-project',
+    orthogonalEdges: false,
+  },
 }))
 
 vi.mock('@likec4/diagram', () => ({
@@ -58,6 +62,7 @@ vi.mock('../components/NotFound', () => ({
 
 vi.mock('../hooks', () => ({
   useCurrentView: () => [testState.diagram],
+  useCurrentProject: () => testState.project,
   useTransparentBackground: vi.fn<(transparent: boolean) => void>(),
 }))
 

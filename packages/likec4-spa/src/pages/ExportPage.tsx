@@ -13,7 +13,7 @@ import { LoadingOverlay } from '@mantine/core'
 import { useSearch } from '@tanstack/react-router'
 import type { CSSProperties } from 'react'
 import { useRef } from 'react'
-import { useCurrentView, useTransparentBackground } from '../hooks'
+import { useCurrentProject, useCurrentView, useTransparentBackground } from '../hooks'
 import {
   computeExportPageLayout,
   EXPORT_DESCRIPTION_BODY_TOP_GAP,
@@ -132,6 +132,7 @@ export function ExportPage() {
  * Renders the measured export viewport for a loaded diagram.
  */
 function GuardedExportPage({ diagram, isJpeg }: { diagram: LayoutedView; isJpeg: boolean }) {
+  const project = useCurrentProject()
   const {
     padding = 20,
     download = false,
@@ -231,6 +232,7 @@ function GuardedExportPage({ diagram, isJpeg }: { diagram: LayoutedView; isJpeg:
           }}
           background={isJpeg ? 'solid' : 'transparent'}
           reduceGraphics={false}
+          enableOrthogonalEdges={project.orthogonalEdges}
           dynamicViewVariant={dynamic}
           className={'likec4-static-view'}
           pannable={false}

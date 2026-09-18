@@ -29,7 +29,7 @@ import {
 } from '@tabler/icons-react'
 import { useNavigate } from '@tanstack/react-router'
 import { type PropsWithChildren, memo, useEffect } from 'react'
-import { useCurrentView, useLikeC4Views } from '../../hooks'
+import { useCurrentProject, useCurrentView, useLikeC4Views } from '../../hooks'
 import { type GroupBy, isTreeNodeData, useDiagramsTreeData } from './data'
 import { SidebarDrawerOps } from './state'
 
@@ -180,6 +180,7 @@ function DiagramPreviewHoverCard({ diagram, children }: PropsWithChildren<{ diag
 const DiagramPreview = memo<{
   diagram: DiagramView
 }>(({ diagram }) => {
+  const { orthogonalEdges } = useCurrentProject()
   const ratio = Math.max(diagram.bounds.width / 400, diagram.bounds.height / 300)
 
   const width = Math.round(diagram.bounds.width / ratio)
@@ -192,6 +193,7 @@ const DiagramPreview = memo<{
       fitViewPadding={'4px'}
       enableElementDetails={false}
       reduceGraphics
+      enableOrthogonalEdges={orthogonalEdges}
       initialWidth={width}
       initialHeight={height}
     />

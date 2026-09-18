@@ -90,6 +90,7 @@ function RouteComponent() {
 
 function ViewCard({ view }: { view: DiagramView }) {
   const [visible, setVisible] = useState(false)
+  const { orthogonalEdges } = useCurrentProject()
   const { ref, inViewport } = useInViewport()
 
   // Deferred rendering to avoid initial freeze
@@ -116,6 +117,7 @@ function ViewCard({ view }: { view: DiagramView }) {
               fitView
               fitViewPadding={'4px'}
               reduceGraphics
+              enableOrthogonalEdges={orthogonalEdges}
             />
           )}
         </Box>
