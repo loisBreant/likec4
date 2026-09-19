@@ -303,12 +303,13 @@ export interface RenderPayload {
   id: string
   title: string
   project: string
+  orthogonalEdges: boolean
   view: LayoutedView
   model: Record<string, unknown>
 }
 
 /**
- * Shapes the `{ id, title, project, view, model }` response shared by `render-view`
+ * Shapes the `{ id, title, project, orthogonalEdges, view, model }` response shared by `render-view`
  * and `preview-view` — both feed a single layouted view plus the rest of a computed
  * model's data into the same paired MCP App UI.
  */
@@ -316,6 +317,7 @@ export function buildRenderPayload<M extends object>(params: {
   projectId: string
   viewId: string
   title: string
+  orthogonalEdges: boolean
   layoutedView: LayoutedView
   modelData: M
 }): RenderPayload {
@@ -323,6 +325,7 @@ export function buildRenderPayload<M extends object>(params: {
     id: params.viewId,
     title: params.title,
     project: params.projectId,
+    orthogonalEdges: params.orthogonalEdges,
     view: params.layoutedView,
     model: {
       ...params.modelData,

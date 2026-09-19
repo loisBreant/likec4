@@ -1,4 +1,4 @@
-import { type scalar } from '@likec4/core/types'
+import type { scalar } from '@likec4/core/types'
 import { css, cx } from '@likec4/styles/css'
 import { Box, HStack, styled, Txt, VStack } from '@likec4/styles/jsx'
 import {

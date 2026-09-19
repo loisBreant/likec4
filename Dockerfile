@@ -1,4 +1,19 @@
-# Stage 1: Build Graphviz
+# Stage 1: Build LikeC4 from the checked-out source.
+# This is the default image target so local images include unpublished changes.
+FROM node:22.22.3-bookworm AS likec4-source
+
+WORKDIR /workspace
+COPY . .
+
+RUN corepack enable && \
+    pnpm install --frozen-lockfile && \
+    pnpm generate && \
+    pnpm typecheck && \
+    pnpm --filter likec4... build && \
+    pnpm --filter likec4 pack && \
+    mv likec4-*.tgz /tmp/likec4.tgz
+
+# Stage 2: Build Graphviz
 FROM node:22.22.3-bookworm AS graphviz
 
 ENV LANG=C.UTF-8
@@ -33,7 +48,7 @@ RUN apt-get update && \
     make install DESTDIR=/install && \
     ldconfig
 
-# Stage 2: Create runner image
+# Stage 3: Create the common runner image
 FROM node:22.22.3-bookworm-slim AS runner
 
 ENV LANG=C.UTF-8
@@ -71,12 +86,10 @@ RUN apt-get update && \
     rm -rf /var/lib/apt/lists/* && \
     rm -rf /root/.npm
 
-# Install LikeC4
-ENV NODE_ENV=production
-ARG LIKEC4_VER=latest
-RUN npm install -g likec4@${LIKEC4_VER} && \
-    rm -rf /root/.npm
+# Stage 4: Common application configuration
+FROM runner AS app
 
+ENV NODE_ENV=production
 WORKDIR /data
 
 ENTRYPOINT ["/usr/local/bin/likec4"]
@@ -84,3 +97,19 @@ CMD ["-h"]
 
 # Default ports
 EXPOSE 5173 24678
+
+# Install LikeC4 from the published registry. The release workflow targets
+# this stage so release images keep their existing registry-based behavior.
+FROM app AS registry
+
+ARG LIKEC4_VER=latest
+RUN npm install -g likec4@${LIKEC4_VER} && \
+    rm -rf /root/.npm
+
+# Install LikeC4 from the source stage. This target is deliberately last so a
+# plain `docker build` produces an image containing the current checkout.
+FROM app AS source
+
+COPY --from=likec4-source /tmp/likec4.tgz /tmp/likec4.tgz
+RUN npm install -g /tmp/likec4.tgz && \
+    rm -rf /root/.npm /tmp/likec4.tgz

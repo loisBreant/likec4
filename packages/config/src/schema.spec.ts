@@ -91,6 +91,17 @@ describe('ProjectConfig schema', () => {
     })
 
     describe('webapp field', () => {
+      it('should accept orthogonal relationship edges', ({ expect }) => {
+        const result = validateConfig({
+          name: 'test',
+          webapp: {
+            orthogonalEdges: true,
+          },
+        })
+
+        expect(result.webapp?.orthogonalEdges).toBe(true)
+      })
+
       it('should accept relationship browser global default scope', ({ expect }) => {
         const result = validateConfig({
           name: 'test',

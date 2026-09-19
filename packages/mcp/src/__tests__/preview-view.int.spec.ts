@@ -24,6 +24,26 @@ const DSL = `
 `
 
 describe('preview-view tool', () => {
+  it('returns the source project orthogonal-edge setting for the paired UI', async () => {
+    await using pair = await createMCPTestPair({
+      dsl: DSL,
+      projectConfig: {
+        name: 'orthogonal-project',
+        webapp: { orthogonalEdges: true },
+      },
+    })
+    const result = await pair.client.callTool({
+      name: 'preview-view',
+      arguments: {
+        project: 'orthogonal-project',
+        dsl: 'view draft of other { include * }',
+      },
+    })
+
+    expect(result.isError).toBeFalsy()
+    expect(structured(result)['orthogonalEdges']).toBe(true)
+  })
+
   it('renders a brand-new view referencing existing elements', async () => {
     await using pair = await createMCPTestPair(DSL)
     const result = await pair.client.callTool({

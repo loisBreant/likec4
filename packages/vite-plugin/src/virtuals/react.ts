@@ -2,7 +2,7 @@ import { first } from 'remeda'
 import { logGenerating } from '../logger'
 import { type ProjectVirtualModule, type VirtualModule, generateMatches } from './_shared'
 
-const projectCode = (id: string) => `
+const projectCode = (id: string, orthogonalEdges: boolean) => `
 import { jsx as _jsx } from "react/jsx-runtime";
 import { LikeC4ModelProvider as Provider, LikeC4View as GenericView, ReactLikeC4 as GenericReactLikeC4 } from 'likec4/react';
 import { IconRenderer } from 'likec4:icons/${id}'
@@ -14,10 +14,10 @@ export function LikeC4ModelProvider({ children }) {
   return (_jsx(Provider, { likec4model: likeC4Model, children: children }));
 }
 export function LikeC4View(props) {
-  return (_jsx(LikeC4ModelProvider, { children: _jsx(GenericView, { renderIcon: IconRenderer, ...props }) }));
+  return (_jsx(LikeC4ModelProvider, { children: _jsx(GenericView, { renderIcon: IconRenderer, ...props, enableOrthogonalEdges: props.enableOrthogonalEdges ?? ${orthogonalEdges} }) }));
 }
 export function ReactLikeC4(props) {
-  return (_jsx(LikeC4ModelProvider, { children: _jsx(GenericReactLikeC4, { renderIcon: IconRenderer, ...props }) }));
+  return (_jsx(LikeC4ModelProvider, { children: _jsx(GenericReactLikeC4, { renderIcon: IconRenderer, ...props, enableOrthogonalEdges: props.enableOrthogonalEdges ?? ${orthogonalEdges} }) }));
 }
 
 export {
@@ -32,7 +32,7 @@ export const projectReactModule: ProjectVirtualModule = {
   async load({ project }) {
     logGenerating('react', project.id)
     return {
-      code: projectCode(project.id),
+      code: projectCode(project.id, project.config.webapp?.orthogonalEdges ?? false),
       moduleType: 'js',
     }
   },

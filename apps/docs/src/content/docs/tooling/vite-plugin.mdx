@@ -347,6 +347,19 @@ export default defineConfig({
 });
 ```
 
+To render relationship edges as horizontal and vertical segments in the generated application, enable the project setting:
+
+```json
+{
+  "name": "your-project",
+  "webapp": {
+    "orthogonalEdges": true
+  }
+}
+```
+
+The setting is also applied to generated React components and webcomponents. It can be overridden for an individual React view with `enableOrthogonalEdges={false}`.
+
 To use React components, first you need to wrap them in astro components:
 
 ```astro

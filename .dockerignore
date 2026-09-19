@@ -1,0 +1,12 @@
+.git
+.codex
+.turbo
+.pnpm-store
+.dprint-cache
+node_modules
+**/node_modules
+**/dist
+**/lib
+packages/likec4/__app__
+packages/likec4/react
+*.tgz

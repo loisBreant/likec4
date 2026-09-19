@@ -29,7 +29,7 @@ const resetEnv = () => {
   delete process.env['MINIMAX_REGION']
 }
 
-describe('detectAI', () => {
+describe.sequential('detectAI', () => {
   beforeEach(() => {
     vi.resetModules()
     mocks.ensurePackage.mockClear()

@@ -186,6 +186,13 @@ export interface LikeC4ViewProps<A extends t.aux.Any = t.aux.UnknownLayouted> {
   enableNotes?: boolean | undefined
 
   /**
+   * Render relationship edges as orthogonal (horizontal/vertical) paths with
+   * 90-degree corners instead of curved splines.
+   * @default false
+   */
+  enableOrthogonalEdges?: boolean | undefined
+
+  /**
    * Improve performance by hiding certain elements and reducing visual effects (disable mix-blend, shadows, animations)
    *
    * @default 'auto' - will be set to true if view is pannable and has more than 3000 * 2000 pixels
@@ -380,6 +387,7 @@ export function LikeC4View<A extends t.aux.Any = t.aux.UnknownLayouted>({
   enableRelationshipDetails = false,
   enableRelationshipBrowser = enableRelationshipDetails,
   enableNotes = false,
+  enableOrthogonalEdges = false,
   reduceGraphics = 'auto',
   mantineTheme,
   styleNonce,
@@ -483,6 +491,7 @@ export function LikeC4View<A extends t.aux.Any = t.aux.UnknownLayouted>({
         enableRelationshipBrowser={enableRelationshipBrowser}
         enableElementTags={false}
         enableNotes={enableNotes}
+        enableOrthogonalEdges={enableOrthogonalEdges}
         controls={controls}
         reduceGraphics={reduceGraphics}
         className={cx(
@@ -522,6 +531,7 @@ export function LikeC4View<A extends t.aux.Any = t.aux.UnknownLayouted>({
             enableNotes
             enableCompareWithLatest
             controls
+            enableOrthogonalEdges={enableOrthogonalEdges}
             fitView
             {...props}
             fitViewPadding={FitViewPaddings.withControls}

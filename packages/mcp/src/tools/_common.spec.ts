@@ -313,6 +313,7 @@ describe('buildRenderPayload', () => {
       projectId: 'default',
       viewId: 'index',
       title: 'Index',
+      orthogonalEdges: true,
       layoutedView,
       modelData,
     })
@@ -320,6 +321,7 @@ describe('buildRenderPayload', () => {
     expect(payload.id).toBe('index')
     expect(payload.title).toBe('Index')
     expect(payload.project).toBe('default')
+    expect(payload.orthogonalEdges).toBe(true)
     expect(payload.view).toBe(layoutedView)
     expect(payload.model['specification']).toBe(modelData.specification)
     expect(payload.model['views']).toEqual({ index: layoutedView })

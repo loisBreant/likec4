@@ -91,6 +91,7 @@ jobs:
         env:
           CACHE_TAG: ${{ matrix.os == 'ubuntu-24.04-arm' && 'buildcache-arm64' || 'buildcache-amd64' }}
         with:
+          target: registry
           platforms: ${{ matrix.os == 'ubuntu-24.04-arm' && 'linux/arm64' || 'linux/amd64' }}
           labels: ${{ steps.meta.outputs.labels }}
           tags: |

@@ -8,6 +8,7 @@ import { createRoot } from 'react-dom/client'
 
 interface RenderViewResult {
   view: DiagramView
+  orthogonalEdges: boolean
   // Layouted model data, scoped to just this view — see tools/render-view.ts.
   // LikeC4Diagram unconditionally reads model.specification (tag colors), so
   // it needs a real LikeC4Model in a LikeC4ModelProvider, not just the view.
@@ -64,7 +65,11 @@ function RenderViewApp() {
         }
         const structured = result.structuredContent as Partial<RenderViewResult> | undefined
         if (structured?.view && structured?.model) {
-          setResult({ view: structured.view, model: structured.model })
+          setResult({
+            view: structured.view,
+            model: structured.model,
+            orthogonalEdges: structured.orthogonalEdges ?? false,
+          })
         }
       }
     },
@@ -91,7 +96,14 @@ function RenderViewApp() {
   return (
     <LikeC4MantineProvider forceColorScheme={theme}>
       <LikeC4ModelProvider likec4model={likec4model}>
-        <LikeC4Diagram view={result.view} pannable zoomable fitView controls />
+        <LikeC4Diagram
+          view={result.view}
+          pannable
+          zoomable
+          fitView
+          controls
+          enableOrthogonalEdges={result.orthogonalEdges}
+        />
       </LikeC4ModelProvider>
     </LikeC4MantineProvider>
   )

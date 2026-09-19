@@ -36,6 +36,7 @@ Use this when the user wants to *see* a view. Use "read-view" instead when only 
         id: z.string(),
         title: z.string(),
         project: z.string(),
+        orthogonalEdges: z.boolean(),
         view: z.record(z.string(), z.unknown())
           .describe('Full layouted view (nodes, edges, bounds), consumed by the paired render-view UI'),
         model: z.record(z.string(), z.unknown())
@@ -56,6 +57,7 @@ Use this when the user wants to *see* a view. Use "read-view" instead when only 
     async (args): Promise<CallToolResult> => {
       const languageServices = useLanguageServices()
       const projectId = languageServices.projectsManager.ensureProjectId(args.project)
+      const project = languageServices.projectsManager.getProject(projectId)
       const model = await languageServices.layoutedModel(projectId)
       const viewModel = model.findView(args.viewId)
 
@@ -82,6 +84,7 @@ Use this when the user wants to *see* a view. Use "read-view" instead when only 
           projectId,
           viewId: viewModel.id,
           title,
+          orthogonalEdges: project.config.webapp?.orthogonalEdges ?? false,
           layoutedView,
           modelData: model.$data,
         }),

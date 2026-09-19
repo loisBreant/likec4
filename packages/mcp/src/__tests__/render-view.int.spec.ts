@@ -16,6 +16,23 @@ const DSL = `
 `
 
 describe('render-view tool', () => {
+  it('returns the project orthogonal-edge setting for the paired UI', async () => {
+    await using pair = await createMCPTestPair({
+      dsl: DSL,
+      projectConfig: {
+        name: 'orthogonal-project',
+        webapp: { orthogonalEdges: true },
+      },
+    })
+    const result = await pair.client.callTool({
+      name: 'render-view',
+      arguments: { viewId: 'index', project: 'orthogonal-project' },
+    })
+
+    expect(result.isError).toBeFalsy()
+    expect(structured(result)['orthogonalEdges']).toBe(true)
+  })
+
   it('callTool(render-view) returns structuredContent with a layouted view', async () => {
     await using pair = await createMCPTestPair(DSL)
     const result = await pair.client.callTool({

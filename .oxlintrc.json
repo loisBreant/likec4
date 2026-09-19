@@ -21,6 +21,7 @@
     "packages/create-likec4/",
     "packages/icons/",
     "apps/docs/",
+    "e2e/",
     "styled-system/styles/",
     "examples/"
   ],
