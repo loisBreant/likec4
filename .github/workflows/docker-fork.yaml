@@ -45,9 +45,14 @@ jobs:
     steps:
       - uses: actions/checkout@v6
 
+      - name: Free disk space
+        run: |
+          sudo rm -rf /usr/share/dotnet /opt/ghc /usr/local/lib/android /usr/local/share/boost || true
+          df -h /
+
       - name: Resolve image name and build args
         run: |
-          echo "REGISTRY_IMAGE=ghcr.io/${GITHUB_REPOSITORY,,}" >> "$GITHUB_ENV"
+          echo "REGISTRY_IMAGE=ghcr.io/${GITHUB_REPOSITORY,,}-ci" >> "$GITHUB_ENV"
           PLAYWRIGHT_VER="$(grep -oE 'playwright@[0-9]+\.[0-9]+\.[0-9]+' pnpm-lock.yaml | head -1 | cut -d@ -f2)"
           if [ -z "$PLAYWRIGHT_VER" ]; then
             echo "::error::Failed to resolve PLAYWRIGHT_VER from pnpm-lock.yaml"
@@ -111,7 +116,7 @@ jobs:
           merge-multiple: true
 
       - name: Resolve image name
-        run: echo "REGISTRY_IMAGE=ghcr.io/${GITHUB_REPOSITORY,,}" >> "$GITHUB_ENV"
+        run: echo "REGISTRY_IMAGE=ghcr.io/${GITHUB_REPOSITORY,,}-ci" >> "$GITHUB_ENV"
 
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v3
